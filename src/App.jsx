@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import {
+  ArrowLeft,
+  ArrowRight,
   ArrowUpRight,
   Box,
   Building2,
@@ -34,35 +36,30 @@ const featuredProjects = [
     location: "Bengaluru, India",
     image:
       "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1500&q=85",
-    span: "lg:row-span-2 lg:min-h-[680px]",
   },
   {
     name: "The Terraced House",
     location: "Goa, India",
     image:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1500&q=85",
-    span: "lg:min-h-[330px]",
   },
   {
     name: "Monolith Gallery",
     location: "New Delhi, India",
     image:
       "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1500&q=85",
-    span: "lg:min-h-[330px]",
   },
   {
     name: "Civic Atrium",
     location: "Mumbai, India",
     image:
       "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1500&q=85",
-    span: "lg:min-h-[430px]",
   },
   {
     name: "Noya House",
     location: "Pune, India",
     image:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1500&q=85",
-    span: "lg:min-h-[430px]",
   },
 ];
 
@@ -303,11 +300,24 @@ function Hero() {
 }
 
 function FeaturedProjects() {
+  const scrollContainerRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const scrollAmount = container.clientWidth * 0.8;
+      container.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <Section id="projects" className="bg-black px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <Section id="projects" className="bg-black py-24 sm:py-32 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
         <Reveal>
-          <div className="mb-12 max-w-4xl">
+          <div className="max-w-4xl">
             <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-neutral-500">
               Portfolio
             </p>
@@ -317,30 +327,65 @@ function FeaturedProjects() {
           </div>
         </Reveal>
 
-        <div className="grid auto-rows-[330px] gap-5 md:grid-cols-2 lg:grid-cols-3 lg:auto-rows-[320px]">
-          {featuredProjects.map((project, index) => (
-            <Reveal key={project.name} delay={index * 0.05} amount={0.16}>
-              <article
-                className={`group relative h-full min-h-[330px] overflow-hidden rounded-lg border border-neutral-800 bg-neutral-950 ${project.span}`}
-              >
-                <img
-                  src={project.image}
-                  alt={`${project.name} architecture project`}
-                  className="h-full w-full object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <p className="mb-2 text-sm font-medium text-neutral-400">
-                    {project.location}
-                  </p>
-                  <h3 className="text-3xl font-black leading-none tracking-tighter text-white">
-                    {project.name}
-                  </h3>
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal delay={0.1}>
+          <div className="flex gap-3">
+            <motion.button
+              whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.4)" }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => scroll("left")}
+              className="grid h-12 w-12 place-items-center rounded-full border border-neutral-800 bg-neutral-950/60 hover:border-neutral-500 text-white transition-colors"
+              aria-label="Scroll left"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.4)" }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => scroll("right")}
+              className="grid h-12 w-12 place-items-center rounded-full border border-neutral-800 bg-neutral-950/60 hover:border-neutral-500 text-white transition-colors"
+              aria-label="Scroll right"
+            >
+              <ArrowRight className="h-5 w-5" />
+            </motion.button>
+          </div>
+        </Reveal>
+      </div>
+
+      <div
+        ref={scrollContainerRef}
+        className="flex w-full gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-10 pl-4 sm:pl-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-[max(2rem,calc((100vw-80rem)/2+2rem))]"
+      >
+        {featuredProjects.map((project, index) => (
+          <motion.div
+            key={project.name}
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{
+              type: "spring",
+              stiffness: 60,
+              damping: 14,
+              delay: index * 0.05,
+            }}
+            className="w-[85vw] md:w-[75vw] lg:w-[65vw] shrink-0 snap-start h-[70vh] sm:h-[80vh] rounded-2xl overflow-hidden relative group cursor-grab active:cursor-grabbing"
+          >
+            <img
+              src={project.image}
+              alt={`${project.name} architecture project`}
+              className="h-full w-full object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-8 sm:p-12 text-left z-10">
+              <p className="mb-2 text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-neutral-400">
+                {project.location}
+              </p>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black leading-none tracking-tighter text-white">
+                {project.name}
+              </h3>
+            </div>
+          </motion.div>
+        ))}
+        <div className="w-[10vw] shrink-0 snap-align-none" />
       </div>
     </Section>
   );
