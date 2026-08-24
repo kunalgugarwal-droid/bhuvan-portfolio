@@ -1,22 +1,31 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
+import Contact from "./Contact";
+import {
+  completedProjects,
+  underConstructionProjects,
+} from "./data/projects";
 import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   Box,
   Building2,
+  Compass,
+  HardHat,
+  Menu,
   Phone,
   Ruler,
   Star,
+  X,
 } from "lucide-react";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "Projects / Portfolio", href: "#projects" },
-  { label: "About Us / The Studio", href: "#experience" },
-  { label: "Services / Expertise", href: "#services" },
-  { label: "Contact", href: "/contact" },
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/projects" },
+  { label: "About Us", href: "/about" },
+  { label: "Services", href: "/services" },
 ];
 
 const spring = {
@@ -30,39 +39,6 @@ const sectionMotion = {
   visible: { opacity: 1, y: 0 },
 };
 
-const featuredProjects = [
-  {
-    name: "Aether Residences",
-    location: "Bengaluru, India",
-    image:
-      "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1500&q=85",
-  },
-  {
-    name: "The Terraced House",
-    location: "Goa, India",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1500&q=85",
-  },
-  {
-    name: "Monolith Gallery",
-    location: "New Delhi, India",
-    image:
-      "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1500&q=85",
-  },
-  {
-    name: "Civic Atrium",
-    location: "Mumbai, India",
-    image:
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1500&q=85",
-  },
-  {
-    name: "Noya House",
-    location: "Pune, India",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1500&q=85",
-  },
-];
-
 const services = [
   {
     title: "Architectural Design",
@@ -71,10 +47,10 @@ const services = [
       "Context-led concepts, plans, elevations, and construction-ready design systems for residential and commercial properties.",
   },
   {
-    title: "Interior Planning",
-    icon: Ruler,
+    title: "2D & 3D Mapping (Autodesk)",
+    icon: Compass,
     description:
-      "Spatial planning, material palettes, lighting direction, and detail packages that make the architecture feel complete.",
+      "Precision 2D drafting, floor plans, structural elevations, and detailed 3D spatial mapping created using Autodesk for seamless construction.",
   },
   {
     title: "3D Rendering",
@@ -199,40 +175,164 @@ function CountUp({ value, suffix }) {
   );
 }
 
+const mobileMenuVariants = {
+  hidden: { y: "-100%", opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 50, damping: 14 },
+  },
+  exit: {
+    y: "-100%",
+    opacity: 0,
+    transition: { type: "spring", stiffness: 60, damping: 16 },
+  },
+};
+
+const mobileLinkVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 80, damping: 14, delay: 0.15 + i * 0.07 },
+  }),
+};
+
 function Header() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  const closeMobile = () => setMobileOpen(false);
+  const isActive = (href) => pathname === href;
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 py-4 sm:px-6 lg:px-8">
-      <nav className="mx-auto flex min-h-16 max-w-7xl flex-wrap items-center justify-between gap-3 rounded-lg border border-white/10 bg-black/35 px-4 py-3 shadow-glow backdrop-blur-2xl sm:px-6 lg:flex-nowrap">
-        <a href="#home" className="flex items-center gap-3" aria-label="Bhuvan home">
-          <span className="grid h-9 w-9 place-items-center rounded-sm border border-white bg-white text-sm font-black text-black">
-            BA
-          </span>
-          <span className="hidden text-sm font-semibold uppercase leading-none tracking-tighter sm:block">
-            Bhuvan
-            <span className="block font-medium text-neutral-400">Architecture</span>
-          </span>
-        </a>
+    <>
+      <header className="fixed inset-x-0 top-0 z-50">
+        <nav className="flex h-20 items-center justify-between bg-black/50 px-5 backdrop-blur-2xl border-b border-white/[0.06] sm:px-8 lg:px-12">
+          {/* Logo — far left */}
+          <Link
+            to="/"
+            className="relative z-50 flex items-center gap-3"
+            aria-label="Bhuvan home"
+          >
+            <span className="grid h-9 w-9 place-items-center rounded-sm border border-white bg-white text-sm font-black text-black">
+              BA
+            </span>
+            <span className="text-sm font-semibold uppercase leading-none tracking-tighter">
+              Bhuvan
+              <span className="block font-medium text-neutral-400">
+                Architecture
+              </span>
+            </span>
+          </Link>
 
-        <div className="order-3 flex w-full items-center gap-5 overflow-x-auto whitespace-nowrap pt-1 lg:order-none lg:w-auto lg:overflow-visible lg:pt-0">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-xs font-semibold uppercase text-neutral-400 transition hover:text-white sm:text-sm"
+          {/* Desktop center links */}
+          <div className="absolute inset-x-0 hidden items-center justify-center gap-8 md:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                to={link.href}
+                className={`text-[13px] font-semibold uppercase tracking-[0.14em] transition-colors duration-200 ${
+                  isActive(link.href)
+                    ? "text-white"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop CTA — far right */}
+          <Link
+            to="/contact"
+            className="hidden rounded-md bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-neutral-200 md:inline-block"
+          >
+            Get Started
+          </Link>
+
+          {/* Mobile hamburger / close toggle */}
+          <button
+            onClick={() => setMobileOpen((prev) => !prev)}
+            className="relative z-50 grid h-10 w-10 place-items-center md:hidden"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {mobileOpen ? (
+                <motion.span
+                  key="close"
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X className="h-6 w-6 text-white" />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="menu"
+                  initial={{ opacity: 0, rotate: 90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: -90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu className="h-6 w-6 text-white" />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
+        </nav>
+      </header>
+
+      {/* Mobile full-screen overlay */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            key="mobile-menu"
+            variants={mobileMenuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed inset-0 z-40 flex flex-col items-start justify-center gap-6 bg-black px-8 md:hidden"
+          >
+            {navLinks.map((link, i) => (
+              <motion.div
+                key={link.label}
+                custom={i}
+                variants={mobileLinkVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <Link
+                  to={link.href}
+                  onClick={closeMobile}
+                  className={`text-5xl font-black leading-tight tracking-tighter transition-colors hover:text-neutral-400 sm:text-6xl ${
+                    isActive(link.href) ? "text-white" : "text-neutral-500"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </motion.div>
+            ))}
+
+            <motion.div
+              custom={navLinks.length}
+              variants={mobileLinkVariants}
+              initial="hidden"
+              animate="visible"
             >
-              {link.label}
-            </a>
-          ))}
-        </div>
-
-        <a
-          href="/contact"
-          className="rounded-md bg-white px-4 py-2 text-sm font-bold text-black transition hover:bg-neutral-200 sm:px-5"
-        >
-          Get Started
-        </a>
-      </nav>
-    </header>
+              <Link
+                to="/contact"
+                onClick={closeMobile}
+                className="mt-6 inline-block rounded-md bg-white px-8 py-4 text-base font-bold text-black transition-colors hover:bg-neutral-200"
+              >
+                Get Started
+              </Link>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -264,7 +364,7 @@ function Hero() {
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center">
         <Reveal>
           <p className="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-neutral-400 sm:text-sm">
-            Architecture / Interiors / Urban Strategy
+            Architecture / 2D & 3D Mapping / Urban Strategy
           </p>
         </Reveal>
         <Reveal delay={0.08}>
@@ -280,18 +380,18 @@ function Hero() {
         </Reveal>
         <Reveal delay={0.2} className="mt-9">
           <div className="flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="min-w-36 rounded-md bg-white px-6 py-4 text-sm font-bold text-black transition hover:bg-neutral-200 sm:min-w-40"
             >
               Work With Us
-            </a>
-            <a
-              href="#services"
+            </Link>
+            <Link
+              to="/services"
               className="min-w-36 rounded-md border border-white px-6 py-4 text-sm font-bold text-white transition hover:bg-white hover:text-black sm:min-w-40"
             >
               Our Services
-            </a>
+            </Link>
           </div>
         </Reveal>
       </div>
@@ -299,8 +399,107 @@ function Hero() {
   );
 }
 
+function PageHero({ eyebrow, title, description, image }) {
+  return (
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.7 }}
+      className="relative flex min-h-[62vh] items-end overflow-hidden bg-black px-4 pb-16 pt-36 sm:px-6 sm:pb-20 sm:pt-44 lg:px-8"
+    >
+      <img
+        src={image}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/65" />
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black to-transparent" />
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl">
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...spring, delay: 0.08 }}
+          className="mb-5 text-sm font-semibold uppercase tracking-[0.24em] text-neutral-400"
+        >
+          {eyebrow}
+        </motion.p>
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...spring, delay: 0.14 }}
+          className="max-w-5xl text-5xl font-black leading-none tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-8xl"
+        >
+          {title}
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...spring, delay: 0.2 }}
+          className="mt-7 max-w-2xl text-lg leading-8 text-neutral-300"
+        >
+          {description}
+        </motion.p>
+      </div>
+    </motion.section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ *  FEATURED PROJECTS — Homepage horizontal scroll-snapping slider
+ *  Filters for "completed" status, sliced to exactly 6 items.
+ *  Location text has been removed from the gradient overlay.
+ * ──────────────────────────────────────────────────────────────────────────── */
+function Lightbox({ image, onClose }) {
+  return (
+    <AnimatePresence>
+      {image && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4"
+          onClick={onClose}
+        >
+          <button
+            onClick={onClose}
+            className="absolute top-6 right-6 z-[110] text-white hover:text-neutral-300 transition-colors"
+            aria-label="Close"
+          >
+            <X className="h-8 w-8" />
+          </button>
+          <motion.img
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.9 }}
+            src={image}
+            alt="Expanded view"
+            className="max-w-full max-h-screen object-contain shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function FeaturedProjects() {
   const scrollContainerRef = useRef(null);
+  const sectionRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  // Mouse Drag to Scroll states
+  const isMouseDownRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const hasDraggedRef = useRef(false);
+
+  const [isDraggingState, setIsDraggingState] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+
+  // Exactly 6 completed projects for the homepage slider
+  const sliderProjects = completedProjects.slice(0, 6);
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -311,6 +510,51 @@ function FeaturedProjects() {
         behavior: "smooth",
       });
     }
+  };
+
+  const handleMouseDown = (e) => {
+    if (!scrollContainerRef.current) return;
+    isMouseDownRef.current = true;
+    hasDraggedRef.current = false;
+    setIsDraggingState(false);
+    startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
+  };
+
+  const handleMouseLeave = () => {
+    isMouseDownRef.current = false;
+    setIsDraggingState(false);
+    setIsHovered(false);
+  };
+
+  const handleMouseUp = () => {
+    isMouseDownRef.current = false;
+    setIsDraggingState(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (sectionRef.current) {
+      const rect = sectionRef.current.getBoundingClientRect();
+      setCursorPos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
+
+    if (!isMouseDownRef.current || !scrollContainerRef.current) return;
+    
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 1.6;
+    if (Math.abs(walk) > 5) {
+      hasDraggedRef.current = true;
+      setIsDraggingState(true);
+    }
+    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleCardClick = (image) => {
+    if (hasDraggedRef.current) return;
+    setSelectedImage(image);
   };
 
   return (
@@ -351,43 +595,202 @@ function FeaturedProjects() {
         </Reveal>
       </div>
 
-      <div
-        ref={scrollContainerRef}
-        className="flex w-full gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-10 pl-4 sm:pl-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-[max(2rem,calc((100vw-80rem)/2+2rem))]"
+      <div 
+        ref={sectionRef}
+        className="relative group/slider select-none cursor-grab active:cursor-grabbing"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
       >
-        {featuredProjects.map((project, index) => (
-          <motion.div
-            key={project.name}
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{
-              type: "spring",
-              stiffness: 60,
-              damping: 14,
-              delay: index * 0.05,
-            }}
-            className="w-[85vw] md:w-[75vw] lg:w-[65vw] shrink-0 snap-start h-[70vh] sm:h-[80vh] rounded-2xl overflow-hidden relative group cursor-grab active:cursor-grabbing"
-          >
-            <img
-              src={project.image}
-              alt={`${project.name} architecture project`}
-              className="h-full w-full object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-            <div className="absolute bottom-0 left-0 p-8 sm:p-12 text-left z-10">
-              <p className="mb-2 text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-neutral-400">
-                {project.location}
-              </p>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black leading-none tracking-tighter text-white">
-                {project.name}
-              </h3>
-            </div>
-          </motion.div>
-        ))}
-        <div className="w-[10vw] shrink-0 snap-align-none" />
+        {/* Floating Custom Cursor Indicator */}
+        <AnimatePresence>
+          {isHovered && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={{ 
+                opacity: 1, 
+                scale: isDraggingState ? 0.9 : 1,
+              }}
+              exit={{ opacity: 0, scale: 0.4 }}
+              transition={{ type: "spring", stiffness: 350, damping: 25, mass: 0.5 }}
+              style={{
+                position: "absolute",
+                left: `${cursorPos.x}px`,
+                top: `${cursorPos.y}px`,
+                transform: "translate(-50%, -50%)",
+                pointerEvents: "none",
+                zIndex: 40,
+              }}
+              className="hidden md:flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-extrabold uppercase tracking-widest text-black shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-neutral-200/50 backdrop-blur-md"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              <span>{isDraggingState ? "SLIDING" : "DRAG TO SLIDE"}</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div
+          ref={scrollContainerRef}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          className={`flex w-full gap-6 overflow-x-auto no-scrollbar pb-10 pl-4 sm:pl-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-[max(2rem,calc((100vw-80rem)/2+2rem))] ${
+            isDraggingState ? "snap-none cursor-grabbing" : "snap-x snap-mandatory cursor-grab"
+          }`}
+        >
+          {sliderProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{
+                type: "spring",
+                stiffness: 60,
+                damping: 14,
+                delay: index * 0.05,
+              }}
+              onClick={() => handleCardClick(project.image)}
+              className="w-[85vw] md:w-[75vw] lg:w-[65vw] shrink-0 snap-start h-[70vh] sm:h-[80vh] rounded-2xl overflow-hidden relative group cursor-grab active:cursor-grabbing select-none"
+            >
+              <img
+                src={project.image}
+                alt={`${project.title} architecture project`}
+                draggable="false"
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-105 select-none pointer-events-none"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 left-0 p-8 sm:p-12 text-left z-10 pointer-events-none">
+                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black leading-none tracking-tighter text-white">
+                  {project.title}
+                </h3>
+              </div>
+            </motion.div>
+          ))}
+          <div className="w-[10vw] shrink-0 snap-align-none" />
+        </div>
       </div>
+      <Lightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
     </Section>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ *  PROJECT GALLERY — Used on the dedicated /projects page
+ *  Two sections: "Selected Works" (completed) and "Under Construction".
+ *  Location text has been removed from the hover overlay.
+ * ──────────────────────────────────────────────────────────────────────────── */
+function ProjectGallery() {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  return (
+    <section className="bg-black px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        {/* ── Selected Works (completed) ──────────────────────────────── */}
+        <Reveal>
+          <div className="mb-12 grid gap-6 lg:grid-cols-[0.9fr_1fr] lg:items-end">
+            <div>
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-neutral-500">
+                Selected Works
+              </p>
+              <h2 className="text-5xl font-black leading-none tracking-tighter text-white sm:text-6xl md:text-7xl">
+                Built around place, light, and purpose
+              </h2>
+            </div>
+            <p className="max-w-2xl text-lg leading-8 text-neutral-400 lg:ml-auto">
+              A closer look at residential, cultural, commercial, and civic
+              spaces shaped with careful planning and a strong architectural
+              point of view.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {completedProjects.map((project, index) => (
+            <Reveal key={project.id} delay={index * 0.05}>
+              <article 
+                onClick={() => setSelectedImage(project.image)}
+                className="group h-full overflow-hidden rounded-lg border border-neutral-800 bg-neutral-950/60 transition hover:border-neutral-600 cursor-pointer"
+              >
+                <div className="aspect-[4/3] overflow-hidden bg-neutral-900 relative">
+                  <img
+                    src={project.image}
+                    alt={`${project.title} architecture project`}
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  {/* Hover overlay — no location text */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-black tracking-tighter text-white">
+                    {project.title}
+                  </h3>
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400/80">
+                    Completed
+                  </p>
+                </div>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* ── Under Construction ──────────────────────────────────────── */}
+        {underConstructionProjects.length > 0 && (
+          <>
+            <Reveal>
+              <div className="mb-12 mt-28 grid gap-6 lg:grid-cols-[0.9fr_1fr] lg:items-end">
+                <div>
+                  <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-amber-500/80">
+                    Under Construction
+                  </p>
+                  <h2 className="text-5xl font-black leading-none tracking-tighter text-white sm:text-6xl md:text-7xl">
+                    Currently taking shape
+                  </h2>
+                </div>
+                <p className="max-w-2xl text-lg leading-8 text-neutral-400 lg:ml-auto">
+                  Active projects on site — moving from design documentation
+                  into built reality with precision and care.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {underConstructionProjects.map((project, index) => (
+                <Reveal key={project.id} delay={index * 0.05}>
+                  <article 
+                    onClick={() => setSelectedImage(project.image)}
+                    className="group h-full overflow-hidden rounded-lg border border-neutral-800 bg-neutral-950/60 transition hover:border-neutral-600 cursor-pointer"
+                  >
+                    <div className="aspect-[4/3] overflow-hidden bg-neutral-900 relative">
+                      <img
+                        src={project.image}
+                        alt={`${project.title} architecture project`}
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      />
+                      {/* Hover overlay — no location text */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+                      {/* Under construction badge */}
+                      <div className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-black/70 px-3 py-1.5 backdrop-blur-md">
+                        <HardHat className="h-3.5 w-3.5 text-amber-400" />
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
+                          In Progress
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400/80">
+                        Under Construction
+                      </p>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      <Lightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
+    </section>
   );
 }
 
@@ -466,6 +869,68 @@ function Process() {
             </Reveal>
           ))}
         </div>
+      </div>
+    </Section>
+  );
+}
+
+function AboutStory() {
+  return (
+    <Section className="bg-black px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <Reveal>
+          <div>
+            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-neutral-500">
+              Studio Profile
+            </p>
+            <h2 className="text-5xl font-black leading-none tracking-tighter text-white sm:text-6xl md:text-7xl">
+              We design places that feel calm, precise, and deeply grounded.
+            </h2>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.08}>
+          <div className="space-y-6 text-lg leading-8 text-neutral-400">
+            <p>
+              Bhuvan Architecture is a design studio working across homes,
+              hospitality, culture, and commercial environments. Our work begins
+              with listening closely to the site, the client, and the long-term
+              life of the building.
+            </p>
+            <p>
+              We bring together architecture, 2D & 3D mapping (Autodesk), visualization, and
+              delivery support so each project moves from early idea to built
+              reality with clarity. The result is work that feels distinctive
+              without becoming loud.
+            </p>
+            <div className="grid gap-5 pt-5 sm:grid-cols-3">
+              <div className="border-l border-white/20 pl-5">
+                <p className="text-3xl font-black tracking-tighter text-white">
+                  01
+                </p>
+                <p className="mt-3 text-sm font-semibold uppercase tracking-[0.16em] text-neutral-500">
+                  Context First
+                </p>
+              </div>
+              <div className="border-l border-white/20 pl-5">
+                <p className="text-3xl font-black tracking-tighter text-white">
+                  02
+                </p>
+                <p className="mt-3 text-sm font-semibold uppercase tracking-[0.16em] text-neutral-500">
+                  Detail Driven
+                </p>
+              </div>
+              <div className="border-l border-white/20 pl-5">
+                <p className="text-3xl font-black tracking-tighter text-white">
+                  03
+                </p>
+                <p className="mt-3 text-sm font-semibold uppercase tracking-[0.16em] text-neutral-500">
+                  Built To Last
+                </p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </Section>
   );
@@ -564,77 +1029,172 @@ function Testimonials() {
   );
 }
 
-function FooterCta() {
+function CallToAction() {
   return (
-    <>
-      <Section
-        id="contact"
-        className="flex min-h-screen items-center bg-white px-4 py-24 text-black sm:px-6 lg:px-8"
-      >
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-10">
-          <Reveal>
-            <p className="mb-5 text-sm font-semibold uppercase tracking-[0.24em] text-black/50">
-              Explore / Get In Touch
-            </p>
-            <h2 className="max-w-5xl text-6xl font-black leading-none tracking-tighter sm:text-7xl md:text-8xl lg:text-9xl">
-              Let's start your project.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <a
-              href="/contact"
-              className="inline-flex items-center gap-3 rounded-md bg-black px-8 py-5 text-base font-black text-white transition hover:bg-neutral-800"
-            >
-              Get in Touch
-              <ArrowUpRight className="h-5 w-5" strokeWidth={2} />
-            </a>
-          </Reveal>
-        </div>
-      </Section>
-
-      <footer className="border-t border-neutral-900 bg-black px-4 py-7 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 text-sm text-neutral-400 md:flex-row md:items-center md:justify-between">
-          <p>Copyright 2026 Bhuvan Architecture. All rights reserved.</p>
-          <div className="flex flex-wrap items-center gap-5">
-            <a
-              href="https://instagram.com"
-              className="inline-flex items-center gap-2 transition hover:text-white"
-            >
-              Instagram
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-            <a
-              href="https://facebook.com"
-              className="inline-flex items-center gap-2 transition hover:text-white"
-            >
-              Facebook
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-            <a
-              href="tel:+919876543210"
-              className="inline-flex items-center gap-2 transition hover:text-white"
-            >
-              <Phone className="h-4 w-4" />
-              +91 98765 43210
-            </a>
-          </div>
-        </div>
-      </footer>
-    </>
+    <Section
+      id="cta"
+      className="flex min-h-screen items-center bg-white px-4 py-24 text-black sm:px-6 lg:px-8"
+    >
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-10">
+        <Reveal>
+          <p className="mb-5 text-sm font-semibold uppercase tracking-[0.24em] text-black/50">
+            Explore / Get In Touch
+          </p>
+          <h2 className="max-w-5xl text-6xl font-black leading-none tracking-tighter sm:text-7xl md:text-8xl lg:text-9xl">
+            Let's start your project.
+          </h2>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-3 rounded-md bg-black px-8 py-5 text-base font-black text-white transition hover:bg-neutral-800"
+          >
+            Get in Touch
+            <ArrowUpRight className="h-5 w-5" strokeWidth={2} />
+          </Link>
+        </Reveal>
+      </div>
+    </Section>
   );
 }
 
-export default function App() {
+function Footer() {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <Header />
+    <footer className="border-t border-neutral-900 bg-black px-4 py-7 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-5 text-sm text-neutral-400 md:flex-row md:items-center md:justify-between">
+        <p>Copyright 2026 Bhuvan Architecture. All rights reserved.</p>
+        <div className="flex flex-wrap items-center gap-5">
+          <a
+            href="https://instagram.com"
+            className="inline-flex items-center gap-2 transition hover:text-white"
+          >
+            Instagram
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+          <a
+            href="https://facebook.com"
+            className="inline-flex items-center gap-2 transition hover:text-white"
+          >
+            Facebook
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+          <a
+            href="tel:+919876543210"
+            className="inline-flex items-center gap-2 transition hover:text-white"
+          >
+            <Phone className="h-4 w-4" />
+            +91 98765 43210
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function Home() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const element = document.getElementById(hash.replace('#', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [hash]);
+
+  return (
+    <>
       <Hero />
       <FeaturedProjects />
       <Services />
       <Process />
       <Experience />
       <Testimonials />
-      <FooterCta />
+      <CallToAction />
+    </>
+  );
+}
+
+function ProjectsPage() {
+  // Use the first completed project image for the hero, with a fallback
+  const heroImage = completedProjects[0]?.image ||
+    "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1500&q=85";
+
+  return (
+    <>
+      <PageHero
+        eyebrow="Projects"
+        title="Selected architectural work"
+        description="Explore residential, hospitality, civic, and cultural projects shaped through strong concepts, clear planning, and careful detailing."
+        image={heroImage}
+      />
+      <ProjectGallery />
+      <CallToAction />
+    </>
+  );
+}
+
+function AboutPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="About Us"
+        title="Architecture shaped by context and restraint"
+        description="We are a studio for clients who want buildings and 2D/3D layouts that feel intelligent, enduring, and closely connected to their setting."
+        image="https://images.unsplash.com/photo-1496307653780-42ee777d4833?auto=format&fit=crop&w=1800&q=85"
+      />
+      <AboutStory />
+      <Experience />
+      <Testimonials />
+      <CallToAction />
+    </>
+  );
+}
+
+function ServicesPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="Services"
+        title="Design services from concept to completion"
+        description="From early site strategy to 2D & 3D mapping (Autodesk), visualization, and construction support, our services help projects move with confidence."
+        image="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1800&q=85"
+      />
+      <Services />
+      <Process />
+      <CallToAction />
+    </>
+  );
+}
+
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
+  return null;
+}
+
+export default function App() {
+  return (
+    <main className="min-h-screen bg-black text-white">
+      <ScrollToTop />
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+      <Footer />
     </main>
   );
 }
