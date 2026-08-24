@@ -409,8 +409,11 @@ function PageHero({ eyebrow, title, description, image }) {
     >
       <img
         src={image}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
+        alt={title ? `${title} - ${eyebrow}` : "Architecture Portfolio Hero"}
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
+        className="absolute inset-0 h-full w-full object-cover bg-neutral-900"
       />
       <div className="absolute inset-0 bg-black/65" />
       <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black to-transparent" />
@@ -451,9 +454,12 @@ function PageHero({ eyebrow, title, description, image }) {
  *  Location text has been removed from the gradient overlay.
  * ──────────────────────────────────────────────────────────────────────────── */
 function Lightbox({ image, onClose }) {
+  const imageUrl = typeof image === "object" ? image?.url : image;
+  const imageTitle = typeof image === "object" ? image?.title : null;
+
   return (
     <AnimatePresence>
-      {image && (
+      {imageUrl && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -472,9 +478,11 @@ function Lightbox({ image, onClose }) {
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0.9 }}
-            src={image}
-            alt="Expanded view"
-            className="max-w-full max-h-screen object-contain shadow-2xl"
+            src={imageUrl}
+            alt={imageTitle ? `${imageTitle} architecture project expanded view` : "Expanded architecture project view"}
+            loading="eager"
+            decoding="async"
+            className="max-w-full max-h-screen object-contain shadow-2xl bg-neutral-950"
             onClick={(e) => e.stopPropagation()}
           />
         </motion.div>
@@ -552,9 +560,9 @@ function FeaturedProjects() {
     scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
   };
 
-  const handleCardClick = (image) => {
+  const handleCardClick = (image, title) => {
     if (hasDraggedRef.current) return;
-    setSelectedImage(image);
+    setSelectedImage({ url: image, title });
   };
 
   return (
@@ -650,14 +658,16 @@ function FeaturedProjects() {
                 damping: 14,
                 delay: index * 0.05,
               }}
-              onClick={() => handleCardClick(project.image)}
-              className="w-[85vw] md:w-[75vw] lg:w-[65vw] shrink-0 snap-start h-[70vh] sm:h-[80vh] rounded-2xl overflow-hidden relative group cursor-grab active:cursor-grabbing select-none"
+              onClick={() => handleCardClick(project.image, project.title)}
+              className="w-[85vw] md:w-[75vw] lg:w-[65vw] shrink-0 snap-start h-[70vh] sm:h-[80vh] rounded-2xl overflow-hidden relative group cursor-grab active:cursor-grabbing select-none bg-neutral-900 shadow-xl border border-neutral-800/50"
             >
               <img
                 src={project.image}
                 alt={`${project.title} architecture project`}
+                loading="lazy"
+                decoding="async"
                 draggable="false"
-                className="h-full w-full object-cover transition duration-700 group-hover:scale-105 select-none pointer-events-none"
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-105 select-none pointer-events-none bg-neutral-900"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
               <div className="absolute bottom-0 left-0 p-8 sm:p-12 text-left z-10 pointer-events-none">
@@ -709,14 +719,16 @@ function ProjectGallery() {
           {completedProjects.map((project, index) => (
             <Reveal key={project.id} delay={index * 0.05}>
               <article 
-                onClick={() => setSelectedImage(project.image)}
+                onClick={() => setSelectedImage({ url: project.image, title: project.title })}
                 className="group h-full overflow-hidden rounded-lg border border-neutral-800 bg-neutral-950/60 transition hover:border-neutral-600 cursor-pointer"
               >
                 <div className="aspect-[4/3] overflow-hidden bg-neutral-900 relative">
                   <img
                     src={project.image}
                     alt={`${project.title} architecture project`}
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105 bg-neutral-900"
                   />
                   {/* Hover overlay — no location text */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
@@ -758,14 +770,16 @@ function ProjectGallery() {
               {underConstructionProjects.map((project, index) => (
                 <Reveal key={project.id} delay={index * 0.05}>
                   <article 
-                    onClick={() => setSelectedImage(project.image)}
+                    onClick={() => setSelectedImage({ url: project.image, title: project.title })}
                     className="group h-full overflow-hidden rounded-lg border border-neutral-800 bg-neutral-950/60 transition hover:border-neutral-600 cursor-pointer"
                   >
                     <div className="aspect-[4/3] overflow-hidden bg-neutral-900 relative">
                       <img
                         src={project.image}
                         alt={`${project.title} architecture project`}
-                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105 bg-neutral-900"
                       />
                       {/* Hover overlay — no location text */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />

@@ -29,20 +29,21 @@ function deriveStatus(path) {
 }
 
 // ---- Eager glob import of every image inside /images/**/* ------------------
-// Because images live in the *public* `/images` folder Vite serves them
-// as static assets. We use `import.meta.glob` with `{ eager: true, query: '?url' }`
-// on the public path equivalent exposed through an alias (see below).
-//
-// However, since the images folder sits at the project root (next to `src/`),
-// and Vite's `import.meta.glob` works with the file-system (not the public
-// server path), we glob from the root-relative path `/images/**/*`.
+// Explicitly glob for .png, .jpg, .jpeg, .webp (and uppercase variants)
+// Supports both public /images/ and /src/images/ asset structures in Vite.
 // ---------------------------------------------------------------------------
 
-const imageModules = import.meta.glob("/images/**/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  query: "?url",
-  import: "default",
-});
+const imageModules = import.meta.glob(
+  [
+    "/images/**/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}",
+    "/src/images/**/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}",
+  ],
+  {
+    eager: true,
+    query: "?url",
+    import: "default",
+  }
+);
 
 // Build the projects array automatically
 let _id = 0;
