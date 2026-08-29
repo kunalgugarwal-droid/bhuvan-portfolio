@@ -198,7 +198,7 @@ const mobileLinkVariants = {
   }),
 };
 
-function Header() {
+function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { pathname } = useLocation();
 
@@ -213,15 +213,15 @@ function Header() {
           <Link
             to="/"
             className="relative z-50 flex items-center gap-3"
-            aria-label="Bhuvan home"
+            aria-label="Shree Ambuda Construction home"
           >
-            <span className="grid h-9 w-9 place-items-center rounded-sm border border-white bg-white text-sm font-black text-black">
-              BA
+            <span className="grid h-9 w-9 place-items-center rounded-sm border border-white bg-white text-xs font-black text-black tracking-tighter">
+              SAC
             </span>
             <span className="text-sm font-semibold uppercase leading-none tracking-tighter">
-              Bhuvan
+              Shree Ambuda
               <span className="block font-medium text-neutral-400">
-                Architecture
+                Construction
               </span>
             </span>
           </Link>
@@ -336,6 +336,8 @@ function Header() {
   );
 }
 
+const Header = Navbar;
+
 function Hero() {
   return (
     <motion.section
@@ -352,6 +354,7 @@ function Hero() {
         loop
         playsInline
         poster="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1800&q=85"
+        aria-label="Shree Ambuda Construction Hero Video"
       >
         <source
           src="https://cdn.pixabay.com/video/2021/10/12/91744-636709154_large.mp4"
@@ -374,7 +377,7 @@ function Hero() {
         </Reveal>
         <Reveal delay={0.14}>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-neutral-300 sm:text-lg">
-            A premium architecture studio designing precise, memorable places
+            Shree Ambuda Construction is a premium architecture studio designing precise, memorable places
             for living, hospitality, culture, and long-term urban growth.
           </p>
         </Reveal>
@@ -392,6 +395,13 @@ function Hero() {
             >
               Our Services
             </Link>
+            <a
+              href="tel:+916375683147"
+              className="flex min-w-36 items-center justify-center gap-2.5 rounded-md border border-white/20 bg-white/10 px-6 py-4 text-sm font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:border-white/40 hover:bg-white/20 sm:min-w-40"
+            >
+              <Phone className="h-4 w-4 text-white" />
+              <span>+91 63756 83147</span>
+            </a>
           </div>
         </Reveal>
       </div>
@@ -409,7 +419,7 @@ function PageHero({ eyebrow, title, description, image }) {
     >
       <img
         src={image}
-        alt={title ? `${title} - ${eyebrow}` : "Architecture Portfolio Hero"}
+        alt={title ? `${title} - ${eyebrow}` : "Shree Ambuda Construction Hero"}
         loading="eager"
         decoding="async"
         fetchPriority="high"
@@ -783,13 +793,6 @@ function ProjectGallery() {
                       />
                       {/* Hover overlay — no location text */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
-                      {/* Under construction badge */}
-                      <div className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-black/70 px-3 py-1.5 backdrop-blur-md">
-                        <HardHat className="h-3.5 w-3.5 text-amber-400" />
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
-                          In Progress
-                        </span>
-                      </div>
                     </div>
                     <div className="p-6">
                       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400/80">
@@ -906,7 +909,7 @@ function AboutStory() {
         <Reveal delay={0.08}>
           <div className="space-y-6 text-lg leading-8 text-neutral-400">
             <p>
-              Bhuvan Architecture is a design studio working across homes,
+              Shree Ambuda Construction is a design studio working across homes,
               hospitality, culture, and commercial environments. Our work begins
               with listening closely to the site, the client, and the long-term
               life of the building.
@@ -1076,7 +1079,7 @@ function Footer() {
   return (
     <footer className="border-t border-neutral-900 bg-black px-4 py-7 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-5 text-sm text-neutral-400 md:flex-row md:items-center md:justify-between">
-        <p>Copyright 2026 Bhuvan Architecture. All rights reserved.</p>
+        <p>Copyright 2026 Shree Ambuda Construction. All rights reserved.</p>
         <div className="flex flex-wrap items-center gap-5">
           <a
             href="https://instagram.com"
