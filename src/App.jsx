@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Contact from "./Contact";
+import ServiceArea from "./ServiceArea";
 import {
   completedProjects,
   underConstructionProjects,
@@ -208,7 +209,7 @@ function Navbar() {
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-50">
-        <nav className="flex h-20 items-center justify-between bg-black/50 px-5 backdrop-blur-2xl border-b border-white/[0.06] sm:px-8 lg:px-12">
+        <nav className="relative flex h-20 items-center justify-between bg-black/50 px-5 backdrop-blur-2xl border-b border-white/[0.06] sm:px-8 lg:px-12">
           {/* Logo — far left */}
           <Link
             to="/"
@@ -227,16 +228,15 @@ function Navbar() {
           </Link>
 
           {/* Desktop center links */}
-          <div className="absolute inset-x-0 hidden items-center justify-center gap-8 md:flex">
+          <div className="pointer-events-none absolute inset-x-0 hidden items-center justify-center gap-8 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 to={link.href}
-                className={`text-[13px] font-semibold uppercase tracking-[0.14em] transition-colors duration-200 ${
-                  isActive(link.href)
+                className={`pointer-events-auto text-[13px] font-semibold uppercase tracking-[0.14em] transition-colors duration-200 ${isActive(link.href)
                     ? "text-white"
                     : "text-neutral-400 hover:text-white"
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>
@@ -246,7 +246,7 @@ function Navbar() {
           {/* Desktop CTA — far right */}
           <Link
             to="/contact"
-            className="hidden rounded-md bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-neutral-200 md:inline-block"
+            className="relative z-50 hidden rounded-md bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-neutral-200 md:inline-block cursor-pointer"
           >
             Get Started
           </Link>
@@ -306,9 +306,8 @@ function Navbar() {
                 <Link
                   to={link.href}
                   onClick={closeMobile}
-                  className={`text-5xl font-black leading-tight tracking-tighter transition-colors hover:text-neutral-400 sm:text-6xl ${
-                    isActive(link.href) ? "text-white" : "text-neutral-500"
-                  }`}
+                  className={`text-5xl font-black leading-tight tracking-tighter transition-colors hover:text-neutral-400 sm:text-6xl ${isActive(link.href) ? "text-white" : "text-neutral-500"
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -560,7 +559,7 @@ function FeaturedProjects() {
     }
 
     if (!isMouseDownRef.current || !scrollContainerRef.current) return;
-    
+
     const x = e.pageX - scrollContainerRef.current.offsetLeft;
     const walk = (x - startXRef.current) * 1.6;
     if (Math.abs(walk) > 5) {
@@ -613,7 +612,7 @@ function FeaturedProjects() {
         </Reveal>
       </div>
 
-      <div 
+      <div
         ref={sectionRef}
         className="relative group/slider select-none cursor-grab active:cursor-grabbing"
         onMouseEnter={() => setIsHovered(true)}
@@ -625,8 +624,8 @@ function FeaturedProjects() {
           {isHovered && (
             <motion.div
               initial={{ opacity: 0, scale: 0.4 }}
-              animate={{ 
-                opacity: 1, 
+              animate={{
+                opacity: 1,
                 scale: isDraggingState ? 0.9 : 1,
               }}
               exit={{ opacity: 0, scale: 0.4 }}
@@ -652,9 +651,8 @@ function FeaturedProjects() {
           ref={scrollContainerRef}
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
-          className={`flex w-full gap-6 overflow-x-auto no-scrollbar pb-10 pl-4 sm:pl-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-[max(2rem,calc((100vw-80rem)/2+2rem))] ${
-            isDraggingState ? "snap-none cursor-grabbing" : "snap-x snap-mandatory cursor-grab"
-          }`}
+          className={`flex w-full gap-6 overflow-x-auto no-scrollbar pb-10 pl-4 sm:pl-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-[max(2rem,calc((100vw-80rem)/2+2rem))] ${isDraggingState ? "snap-none cursor-grabbing" : "snap-x snap-mandatory cursor-grab"
+            }`}
         >
           {sliderProjects.map((project, index) => (
             <motion.div
@@ -669,7 +667,7 @@ function FeaturedProjects() {
                 delay: index * 0.05,
               }}
               onClick={() => handleCardClick(project.image, project.title)}
-              className="w-[85vw] md:w-[75vw] lg:w-[65vw] shrink-0 snap-start h-[70vh] sm:h-[80vh] rounded-2xl overflow-hidden relative group cursor-grab active:cursor-grabbing select-none bg-neutral-900 shadow-xl border border-neutral-800/50"
+              className="w-[320px] sm:w-[420px] h-[450px] shrink-0 snap-start rounded-2xl overflow-hidden relative group cursor-grab active:cursor-grabbing select-none bg-neutral-900 shadow-xl border border-neutral-800/60"
             >
               <img
                 src={project.image}
@@ -677,17 +675,17 @@ function FeaturedProjects() {
                 loading="lazy"
                 decoding="async"
                 draggable="false"
-                className="h-full w-full object-cover transition duration-700 group-hover:scale-105 select-none pointer-events-none bg-neutral-900"
+                className="h-full w-full object-cover object-top transition duration-700 group-hover:scale-105 select-none pointer-events-none bg-neutral-900"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
-              <div className="absolute bottom-0 left-0 p-8 sm:p-12 text-left z-10 pointer-events-none">
-                <h3 className="text-3xl sm:text-4xl md:text-5xl font-black leading-none tracking-tighter text-white">
+              <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/95 via-black/50 to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 inset-x-0 p-6 text-left z-10 pointer-events-none">
+                <h3 className="text-lg sm:text-xl font-semibold leading-snug tracking-tight text-white line-clamp-2">
                   {project.title}
                 </h3>
               </div>
             </motion.div>
           ))}
-          <div className="w-[10vw] shrink-0 snap-align-none" />
+          <div className="w-12 sm:w-20 shrink-0 snap-align-none" />
         </div>
       </div>
       <Lightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
@@ -728,7 +726,7 @@ function ProjectGallery() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {completedProjects.map((project, index) => (
             <Reveal key={project.id} delay={index * 0.05}>
-              <article 
+              <article
                 onClick={() => setSelectedImage({ url: project.image, title: project.title })}
                 className="group h-full overflow-hidden rounded-lg border border-neutral-800 bg-neutral-950/60 transition hover:border-neutral-600 cursor-pointer"
               >
@@ -779,7 +777,7 @@ function ProjectGallery() {
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {underConstructionProjects.map((project, index) => (
                 <Reveal key={project.id} delay={index * 0.05}>
-                  <article 
+                  <article
                     onClick={() => setSelectedImage({ url: project.image, title: project.title })}
                     className="group h-full overflow-hidden rounded-lg border border-neutral-800 bg-neutral-950/60 transition hover:border-neutral-600 cursor-pointer"
                   >
@@ -1126,6 +1124,7 @@ function Home() {
     <>
       <Hero />
       <FeaturedProjects />
+      <ServiceArea />
       <Services />
       <Process />
       <Experience />
@@ -1182,6 +1181,7 @@ function ServicesPage() {
       />
       <Services />
       <Process />
+      <ServiceArea />
       <CallToAction />
     </>
   );
