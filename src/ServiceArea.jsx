@@ -80,7 +80,7 @@ export default function ServiceArea() {
               variants={fadeInUp}
               className="mb-10 max-w-lg text-lg leading-8 text-neutral-400"
             >
-              Based in Raniwara, Jalore, Rajasthan (343048), Shree Ambuda
+              Based in Raniwara, Jalore, Rajasthan (343048), Shree Arbuda
               Construction proudly operates within a 100km radius. We bring our
               premium construction and mapping services directly to your site.
             </motion.p>
@@ -138,13 +138,14 @@ export default function ServiceArea() {
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115408.82565609424!2d72.0463133!3d24.7505297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395ce4e3da8f8ea7%3A0x6b4f76231945110!2sRaniwara%2C%20Rajasthan%20343040!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
-                  style={{ border: 0, minHeight: "300px" }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Raniwara, Jalore — Shree Ambuda Construction service area"
+                  title="Raniwara, Jalore — Shree Arbuda Construction service area"
                   className="absolute inset-0 h-full w-full"
                   style={{
+                    border: 0,
+                    minHeight: "300px",
                     filter:
                       "invert(90%) hue-rotate(180deg) contrast(0.8) saturate(0.2)",
                   }}

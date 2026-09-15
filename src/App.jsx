@@ -214,13 +214,13 @@ function Navbar() {
           <Link
             to="/"
             className="relative z-50 flex items-center gap-3"
-            aria-label="Shree Ambuda Construction home"
+            aria-label="Shree Arbuda Construction home"
           >
             <span className="grid h-9 w-9 place-items-center rounded-sm border border-white bg-white text-xs font-black text-black tracking-tighter">
               SAC
             </span>
             <span className="text-sm font-semibold uppercase leading-none tracking-tighter">
-              Shree Ambuda
+              Shree Arbuda
               <span className="block font-medium text-neutral-400">
                 Construction
               </span>
@@ -353,7 +353,7 @@ function Hero() {
         loop
         playsInline
         poster="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1800&q=85"
-        aria-label="Shree Ambuda Construction Hero Video"
+        aria-label="Shree Arbuda Construction Hero Video"
       >
         <source
           src="https://cdn.pixabay.com/video/2021/10/12/91744-636709154_large.mp4"
@@ -376,7 +376,7 @@ function Hero() {
         </Reveal>
         <Reveal delay={0.14}>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-neutral-300 sm:text-lg">
-            Shree Ambuda Construction is a premium architecture studio designing precise, memorable places
+            Shree Arbuda Construction is a premium architecture studio designing precise, memorable places
             for living, hospitality, culture, and long-term urban growth.
           </p>
         </Reveal>
@@ -418,7 +418,7 @@ function PageHero({ eyebrow, title, description, image }) {
     >
       <img
         src={image}
-        alt={title ? `${title} - ${eyebrow}` : "Shree Ambuda Construction Hero"}
+        alt={title ? `${title} - ${eyebrow}` : "Shree Arbuda Construction Hero"}
         loading="eager"
         decoding="async"
         fetchPriority="high"
@@ -907,7 +907,7 @@ function AboutStory() {
         <Reveal delay={0.08}>
           <div className="space-y-6 text-lg leading-8 text-neutral-400">
             <p>
-              Shree Ambuda Construction is a design studio working across homes,
+              Shree Arbuda Construction is a design studio working across homes,
               hospitality, culture, and commercial environments. Our work begins
               with listening closely to the site, the client, and the long-term
               life of the building.
@@ -1077,7 +1077,7 @@ function Footer() {
   return (
     <footer className="border-t border-neutral-900 bg-black px-4 py-7 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-5 text-sm text-neutral-400 md:flex-row md:items-center md:justify-between">
-        <p>Copyright 2026 Shree Ambuda Construction. All rights reserved.</p>
+        <p>Copyright 2026 Shree Arbuda Construction. All rights reserved.</p>
         <div className="flex flex-wrap items-center gap-5">
           <a
             href="https://instagram.com"

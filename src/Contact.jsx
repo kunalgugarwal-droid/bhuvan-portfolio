@@ -27,7 +27,7 @@ export default function Contact() {
     e.preventDefault();
 
     const text = [
-      "*New Website Inquiry - Shree Ambuda Construction*",
+      "*New Website Inquiry - Shree Arbuda Construction*",
       "",
       `*Name:* ${formData.name}`,
       `*Phone:* ${formData.phone || "Not provided"}`,
