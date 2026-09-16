@@ -2,6 +2,26 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Phone, ArrowUpRight, CheckCircle2, AlertCircle } from "lucide-react";
 
+function InstagramIcon({ className = "h-5 w-5", ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -112,7 +132,7 @@ export default function Contact() {
                   <a href="tel:+916375683147" className="text-neutral-400 transition hover:text-white inline-flex items-center gap-1">
                     +91 63756 83147 <ArrowUpRight className="h-3 w-3" />
                   </a>
-                  <p className="text-neutral-500 text-sm mt-1">Mon-Fri, 9am to 6pm IST</p>
+                  <p className="text-neutral-500 text-sm mt-1">Available All Day</p>
                 </div>
               </motion.div>
 
@@ -124,6 +144,23 @@ export default function Contact() {
                   <h3 className="mb-1 text-lg font-bold text-white">Email</h3>
                   <a href="mailto:Bhuvansuthar6375@gmail.com" className="text-neutral-400 transition hover:text-white inline-flex items-center gap-1">
                     Bhuvansuthar6375@gmail.com <ArrowUpRight className="h-3 w-3" />
+                  </a>
+                </div>
+              </motion.div>
+
+              <motion.div variants={fadeInUp} className="flex items-start gap-4">
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-neutral-800 bg-neutral-900">
+                  <InstagramIcon className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="mb-1 text-lg font-bold text-white">Instagram</h3>
+                  <a
+                    href="https://www.instagram.com/bhuvansutharr/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-neutral-400 transition hover:text-white inline-flex items-center gap-1"
+                  >
+                    @bhuvansutharr <ArrowUpRight className="h-3 w-3" />
                   </a>
                 </div>
               </motion.div>

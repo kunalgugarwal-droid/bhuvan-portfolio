@@ -22,6 +22,26 @@ import {
   X,
 } from "lucide-react";
 
+function InstagramIcon({ className = "h-4 w-4", ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Projects", href: "/projects" },
@@ -244,12 +264,24 @@ function Navbar() {
           </div>
 
           {/* Desktop CTA — far right */}
-          <Link
-            to="/contact"
-            className="relative z-50 hidden rounded-md bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-neutral-200 md:inline-block cursor-pointer"
-          >
-            Get Started
-          </Link>
+          <div className="relative z-50 hidden items-center gap-3 md:flex">
+            <a
+              href="https://www.instagram.com/bhuvansutharr/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="grid h-10 w-10 place-items-center rounded-md border border-white/10 bg-neutral-900 text-neutral-300 transition-colors hover:border-white/30 hover:bg-neutral-800 hover:text-white"
+              aria-label="Instagram Profile"
+              title="Follow on Instagram"
+            >
+              <InstagramIcon className="h-4 w-4" />
+            </a>
+            <Link
+              to="/contact"
+              className="rounded-md bg-white px-5 py-2.5 text-sm font-bold text-black transition-colors hover:bg-neutral-200 cursor-pointer"
+            >
+              Get Started
+            </Link>
+          </div>
 
           {/* Mobile hamburger / close toggle */}
           <button
@@ -319,14 +351,24 @@ function Navbar() {
               variants={mobileLinkVariants}
               initial="hidden"
               animate="visible"
+              className="mt-6 flex items-center gap-4"
             >
               <Link
                 to="/contact"
                 onClick={closeMobile}
-                className="mt-6 inline-block rounded-md bg-white px-8 py-4 text-base font-bold text-black transition-colors hover:bg-neutral-200"
+                className="inline-block rounded-md bg-white px-8 py-4 text-base font-bold text-black transition-colors hover:bg-neutral-200"
               >
                 Get Started
               </Link>
+              <a
+                href="https://www.instagram.com/bhuvansutharr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="grid h-14 w-14 place-items-center rounded-md border border-neutral-800 bg-neutral-900 text-white transition-colors hover:border-neutral-600 hover:bg-neutral-800"
+                aria-label="Instagram Profile"
+              >
+                <InstagramIcon className="h-6 w-6" />
+              </a>
             </motion.div>
           </motion.div>
         )}
@@ -1080,14 +1122,19 @@ function Footer() {
         <p>Copyright 2026 Shree Arbuda Construction. All rights reserved.</p>
         <div className="flex flex-wrap items-center gap-5">
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/bhuvansutharr/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 transition hover:text-white"
           >
+            <InstagramIcon className="h-4 w-4 text-neutral-400" />
             Instagram
             <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
             href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 transition hover:text-white"
           >
             Facebook
