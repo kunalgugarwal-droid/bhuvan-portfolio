@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Contact from "./Contact";
 import ServiceArea from "./ServiceArea";
+import CustomCursor from "./components/CustomCursor";
 import {
   completedProjects,
   underConstructionProjects,
@@ -1249,6 +1250,7 @@ function ScrollToTop() {
 export default function App() {
   return (
     <main className="min-h-screen bg-black text-white">
+      <CustomCursor />
       <ScrollToTop />
       <Header />
       <Routes>
