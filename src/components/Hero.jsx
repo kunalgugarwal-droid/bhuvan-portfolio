@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Phone, ArrowUpRight } from "lucide-react";
-import heroVideo from "../../intro video/lv_0_20260917114100.mp4";
+import desktopVideo from "../../intro video/lv_0_20260917114100.mp4";
+import mobileVideo from "../../intro video mobile/WhatsApp Video 2026-09-18 at 7.17.42 PM.mp4";
 
 const spring = {
   type: "spring",
@@ -32,52 +33,73 @@ export default function Hero() {
       transition={{ duration: 0.8 }}
       className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-black px-4 py-32 text-center sm:px-6 lg:px-8"
     >
-      {/* Fullscreen Video Background */}
+      {/* 1. Desktop Video (hidden on mobile, visible on md+) */}
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover hidden md:block"
         autoPlay
         loop
         muted
         playsInline
         preload="auto"
-        aria-label="Shree Arbuda Construction Hero Showcase Video"
+        aria-label="Shree Arbuda Construction Desktop Showcase Video"
       >
-        <source src={heroVideo} type="video/mp4" />
+        <source src={desktopVideo} type="video/mp4" />
         <source src="/intro video/lv_0_20260917114100.mp4" type="video/mp4" />
         <source src="/hero-video.mp4" type="video/mp4" />
         Your browser does not support HTML5 video.
       </video>
 
-      {/* Dark Overlay Gradients for Contrast & Legibility */}
-      <div className="absolute inset-0 bg-black/60" />
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/80 via-black/40 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-black via-black/80 to-transparent" />
+      {/* 2. Mobile Video (visible on mobile, hidden on md+) */}
+      <video
+        className="absolute inset-0 h-full w-full object-cover block md:hidden"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        aria-label="Shree Arbuda Construction Mobile Showcase Video"
+      >
+        <source src={mobileVideo} type="video/mp4" />
+        <source src="/intro video mobile/WhatsApp Video 2026-09-18 at 7.17.42 PM.mp4" type="video/mp4" />
+        <source src="/hero-video-mobile.mp4" type="video/mp4" />
+        Your browser does not support HTML5 video.
+      </video>
 
-      {/* Centered Hero Content */}
-      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center">
+      {/* Multi-stop dark overlay gradients for crystal-clear readability across all devices */}
+      <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none" />
+
+      {/* Hero Text Content & Action Buttons */}
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center">
         <Reveal>
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-4 py-1.5 backdrop-blur-md">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-neutral-300 sm:text-sm">
-              Architecture / 2D & 3D Mapping / Urban Strategy
+              ARCHITECTURE / 2D & 3D MAPPING / CONSTRUCTION
             </p>
           </div>
         </Reveal>
 
-        <Reveal delay={0.08}>
-          <h1 className="text-balance text-4xl font-black leading-[1.02] tracking-tighter text-white sm:text-5xl md:text-6xl lg:text-7xl">
-            Crafting the next generation of properties and communities.
+        <Reveal delay={0.08} className="w-full max-w-full overflow-hidden">
+          <h1 className="whitespace-nowrap text-2xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4.25rem] leading-none">
+            SHREE ARBUDA CONSTRUCTION
           </h1>
         </Reveal>
 
-        <Reveal delay={0.14}>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-neutral-300 sm:text-lg">
-            Shree Arbuda Construction is a premium architecture studio designing precise, memorable places
-            for living, hospitality, culture, and long-term urban growth.
+        <Reveal delay={0.12}>
+          <p className="mx-auto mt-5 max-w-3xl text-lg font-semibold text-neutral-100 sm:text-xl md:text-2xl">
+            Premium Haweli, Villa, Houses & Commercial Construction Services.
           </p>
         </Reveal>
 
-        <Reveal delay={0.2} className="mt-9">
+        <Reveal delay={0.16}>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-neutral-300 sm:text-base md:text-lg">
+            Designing and building high-end traditional hawelis, modern villas, and custom homes with precision 2D/3D mapping across Raniwara and surrounding areas.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.22} className="mt-9">
           <div className="flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
             <Link
               to="/contact"
