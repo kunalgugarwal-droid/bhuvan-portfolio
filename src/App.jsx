@@ -4,6 +4,7 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Contact from "./Contact";
 import ServiceArea from "./ServiceArea";
 import CustomCursor from "./components/CustomCursor";
+import Hero from "./components/Hero";
 import {
   completedProjects,
   underConstructionProjects,
@@ -380,76 +381,6 @@ function Navbar() {
 
 const Header = Navbar;
 
-function Hero() {
-  return (
-    <motion.section
-      id="home"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-black px-4 py-32 text-center sm:px-6 lg:px-8"
-    >
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1800&q=85"
-        aria-label="Shree Arbuda Construction Hero Video"
-      >
-        <source
-          src="https://cdn.pixabay.com/video/2021/10/12/91744-636709154_large.mp4"
-          type="video/mp4"
-        />
-      </video>
-      <div className="absolute inset-0 bg-black/60" />
-      <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black to-transparent" />
-
-      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center">
-        <Reveal>
-          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-neutral-400 sm:text-sm">
-            Architecture / 2D & 3D Mapping / Urban Strategy
-          </p>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <h1 className="text-balance text-4xl font-black leading-[1.02] tracking-tighter text-white sm:text-5xl md:text-6xl lg:text-7xl">
-            Crafting the next generation of properties and communities.
-          </h1>
-        </Reveal>
-        <Reveal delay={0.14}>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-neutral-300 sm:text-lg">
-            Shree Arbuda Construction is a premium architecture studio designing precise, memorable places
-            for living, hospitality, culture, and long-term urban growth.
-          </p>
-        </Reveal>
-        <Reveal delay={0.2} className="mt-9">
-          <div className="flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <Link
-              to="/contact"
-              className="min-w-36 rounded-md bg-white px-6 py-4 text-sm font-bold text-black transition hover:bg-neutral-200 sm:min-w-40"
-            >
-              Work With Us
-            </Link>
-            <Link
-              to="/services"
-              className="min-w-36 rounded-md border border-white px-6 py-4 text-sm font-bold text-white transition hover:bg-white hover:text-black sm:min-w-40"
-            >
-              Our Services
-            </Link>
-            <a
-              href="tel:+916375683147"
-              className="flex min-w-36 items-center justify-center gap-2.5 rounded-md border border-white/20 bg-white/10 px-6 py-4 text-sm font-bold text-white backdrop-blur-md transition-all duration-200 hover:scale-105 hover:border-white/40 hover:bg-white/20 sm:min-w-40"
-            >
-              <Phone className="h-4 w-4 text-white" />
-              <span>+91 63756 83147</span>
-            </a>
-          </div>
-        </Reveal>
-      </div>
-    </motion.section>
-  );
-}
 
 function PageHero({ eyebrow, title, description, image }) {
   return (
