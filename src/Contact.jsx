@@ -22,6 +22,24 @@ function InstagramIcon({ className = "h-5 w-5", ...props }) {
   );
 }
 
+function FacebookIcon({ className = "h-5 w-5", ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -155,12 +173,29 @@ export default function Contact() {
                 <div>
                   <h3 className="mb-1 text-lg font-bold text-white">Instagram</h3>
                   <a
-                    href="https://www.instagram.com/bhuvansutharr/"
+                    href="https://www.instagram.com/jayesh__935?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw=="
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-neutral-400 transition hover:text-white inline-flex items-center gap-1"
                   >
-                    @bhuvansutharr <ArrowUpRight className="h-3 w-3" />
+                    @jayesh__935 <ArrowUpRight className="h-3 w-3" />
+                  </a>
+                </div>
+              </motion.div>
+
+              <motion.div variants={fadeInUp} className="flex items-start gap-4">
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-neutral-800 bg-neutral-900">
+                  <FacebookIcon className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="mb-1 text-lg font-bold text-white">Facebook</h3>
+                  <a
+                    href="https://www.facebook.com/100060652575422/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-neutral-400 transition hover:text-white inline-flex items-center gap-1"
+                  >
+                    Shree Arbuda Construction <ArrowUpRight className="h-3 w-3" />
                   </a>
                 </div>
               </motion.div>

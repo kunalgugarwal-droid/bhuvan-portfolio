@@ -44,6 +44,24 @@ function InstagramIcon({ className = "h-4 w-4", ...props }) {
   );
 }
 
+function FacebookIcon({ className = "h-4 w-4", ...props }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Projects", href: "/projects" },
@@ -108,7 +126,7 @@ const processSteps = [
 
 const metrics = [
   { value: 15, suffix: "+", label: "Years Experience" },
-  { value: 120, suffix: "+", label: "Projects Completed" },
+  { value: 5000, suffix: "+", label: "Projects Completed" },
   { value: 10, suffix: "+", label: "Industry Awards" },
   { value: 32, suffix: "M", label: "Sq. ft. Designed" },
 ];
@@ -268,7 +286,7 @@ function Navbar() {
           {/* Desktop CTA — far right */}
           <div className="relative z-50 hidden items-center gap-3 md:flex">
             <a
-              href="https://www.instagram.com/bhuvansutharr/"
+              href="https://www.instagram.com/jayesh__935?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw=="
               target="_blank"
               rel="noopener noreferrer"
               className="grid h-10 w-10 place-items-center rounded-md border border-white/10 bg-neutral-900 text-neutral-300 transition-colors hover:border-white/30 hover:bg-neutral-800 hover:text-white"
@@ -276,6 +294,16 @@ function Navbar() {
               title="Follow on Instagram"
             >
               <InstagramIcon className="h-4 w-4" />
+            </a>
+            <a
+              href="https://www.facebook.com/100060652575422/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="grid h-10 w-10 place-items-center rounded-md border border-white/10 bg-neutral-900 text-neutral-300 transition-colors hover:border-white/30 hover:bg-neutral-800 hover:text-white"
+              aria-label="Facebook Profile"
+              title="Follow on Facebook"
+            >
+              <FacebookIcon className="h-4 w-4" />
             </a>
             <Link
               to="/contact"
@@ -362,15 +390,26 @@ function Navbar() {
               >
                 Get Started
               </Link>
-              <a
-                href="https://www.instagram.com/bhuvansutharr/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="grid h-14 w-14 place-items-center rounded-md border border-neutral-800 bg-neutral-900 text-white transition-colors hover:border-neutral-600 hover:bg-neutral-800"
-                aria-label="Instagram Profile"
-              >
-                <InstagramIcon className="h-6 w-6" />
-              </a>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://www.instagram.com/jayesh__935?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="grid h-14 w-14 place-items-center rounded-md border border-neutral-800 bg-neutral-900 text-white transition-colors hover:border-neutral-600 hover:bg-neutral-800"
+                  aria-label="Instagram Profile"
+                >
+                  <InstagramIcon className="h-6 w-6" />
+                </a>
+                <a
+                  href="https://www.facebook.com/100060652575422/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="grid h-14 w-14 place-items-center rounded-md border border-neutral-800 bg-neutral-900 text-white transition-colors hover:border-neutral-600 hover:bg-neutral-800"
+                  aria-label="Facebook Profile"
+                >
+                  <FacebookIcon className="h-6 w-6" />
+                </a>
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -1054,7 +1093,7 @@ function Footer() {
         <p>Copyright 2026 Shree Arbuda Construction. All rights reserved.</p>
         <div className="flex flex-wrap items-center gap-5">
           <a
-            href="https://www.instagram.com/bhuvansutharr/"
+            href="https://www.instagram.com/jayesh__935?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw=="
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 transition hover:text-white"
@@ -1064,11 +1103,12 @@ function Footer() {
             <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/100060652575422/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 transition hover:text-white"
           >
+            <FacebookIcon className="h-4 w-4 text-neutral-400" />
             Facebook
             <ArrowUpRight className="h-4 w-4" />
           </a>
